@@ -1,26 +1,60 @@
 import matplotlib.pyplot as plt
 class GameOfLife(object):
+    '''
+    A class to represent Conway's Game of Life.
+    The Game of Life is a cellular automaton devised by mathematician John Conway.
+        This class allows you to simulate the game on a grid of arbitrary size.
+    The grid is presented in the following way: dead cells are black, live cells are orange.
+    '''
 
     def __init__(self, x_dim, y_dim):
-        # Initialize a 2D list with dimensions x_dim by y_dim filled with zeros.
+        '''
+        Initializes the game grid with the specified dimensions as a 2D array
+            Parameters:
+        x_dim: An integer representing the number of rows in the grid.
+        y_dim: An integer representing the number of columns in the grid.
+            Returns:
+        None
+        '''
+
         self.x_dim = x_dim
         self.y_dim = y_dim
         self.grid = [[0 for _ in range(y_dim)] for _ in range(x_dim)]
 
     def get_grid(self):
-        # Implement a getter method for your grid.
+        '''
+        Returns the current state of the game grid
+            Parameters:
+        None
+            Returns:
+        A 2D list representing the game grid, where 1 indicates a live cell and 0 indicates a dead cell
+        '''
+
         return self.grid
 
     def print_grid(self):
-        # Implement a method to print out your grid in a human-readable format.
+        '''
+       Prints the current state of the game grid in as an array of 1s and 0s with horizontal and vertical dividers
+           Parameters:
+       None
+           Returns:
+       None
+       '''
+
         for row in self.grid:
             print("|".join(str(element) for element in row))
         # Horizontal divider
             print("-" * (self.y_dim * 2))
 
     def populate_grid(self, coord):
-        # Given a list of 2D coordinates (represented as tuples/lists with 2 elements each),
-        # set the corresponding elements in your grid to 1.
+        '''
+        Populates the game grid with live cells at the specified coordinates
+            Parameters:
+        coord: A list of tuples. Each tuple represents the (x, y) coordinates of a live cell
+            Returns:
+        None
+        '''
+
         for (row, col) in coord:
             if 0 <= row < self.x_dim and 0 <= col < self.y_dim:
                 self.grid[row][col] = 1
@@ -29,7 +63,15 @@ class GameOfLife(object):
 
     def count_live_neighbors(self, row, col):
         # Additional method not to overload the make_step() method
-        # Count the live neighbors of a cell at position (row, col).
+        '''
+        Counts the number of live neighbors for a cell at a given position.
+            Parameters:
+        row: An integer representing the row index of the cell.
+        col: An integer representing the column index of the cell.
+            Returns:
+        An integer representing the number of live neighbors.
+        '''
+
         directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         live_neighbors = 0
         for dr, dc in directions:
@@ -39,6 +81,16 @@ class GameOfLife(object):
         return live_neighbors
 
     def make_step(self):
+        '''
+         Advances the game by one step according to the rules of Conway's Game of Life.
+         This method updates the game grid based on the current state,
+         applying the rules to determine the next state of each cell.
+             Parameters:
+         None
+             Returns:
+         None
+         '''
+
         # Create an interim grid to store the next state
         interim_grid = [[0 for _ in range(self.y_dim)] for _ in range(self.x_dim)]
 
@@ -63,12 +115,29 @@ class GameOfLife(object):
         self.grid = interim_grid
 
     def make_n_steps(self, n):
+        '''
+       Advances the game by a specified number of steps.
+       This method repeatedly applies the make_step method to evolve the game state over n steps.
+           Parameters:
+       n: An integer representing the number of steps to advance the game.
+           Returns:
+       None
+       '''
+
         # Apply the make_step method n times
         for _ in range(n):
             self.make_step()
 
     def draw_grid(self):
-        ''' Create a scatter plot of the current grid state '''
+        '''
+         Creates a scatter plot of the current grid state.
+         Live cells are shown as orange squares, and dead cells are not plotted,
+         but are implied as black (the color of the background)
+             Parameters:
+         None
+             Returns:
+         None
+         '''
 
         live_cells_x = []
         live_cells_y = []
