@@ -161,6 +161,65 @@ class GameOfLife(object):
         plt.grid(True, color="gray")
         plt.show()
 
+    def run_until_stable(self, max_steps=1000):
+        '''
+        Runs the Game of Life until the pattern stops changing or until a maximum number of steps is reached
+            Parameters:
+        max_steps: An optional integer specifying the maximum number of steps to simulate (default is 1000).
+            Returns:
+        The number of steps taken to reach a stable state.
+        '''
+
+        previous_grid = None
+        steps = 0
+
+        while steps < max_steps:
+            # Save the current grid state to compare later
+            previous_grid = [row[:] for row in self.grid]  # Create a deep copy of the grid
+
+            # Make one step
+            self.make_step()
+
+            # Increment the step count
+            steps += 1
+
+            # Check if the grid has stabilized (i.e., no changes from the previous step)
+            if self.grid == previous_grid:
+                print(f"Pattern stabilized after {steps} steps.")
+                break
+        else:
+            print(f"Reached maximum of {max_steps} steps without stabilizing.")
+
+        return steps
+
+    def run_until_all_dead(self, max_steps=1000):
+        '''
+        Runs the Game of Life until all living cells die or a maximum number of steps is reached
+            Parameters:
+        max_steps: An optional integer specifying the maximum number of steps to simulate (default is 1000).
+            Returns:
+        The number of steps taken until all cells are dead. If max_steps is reached without all cells dying,
+        it returns max_steps.
+        '''
+
+        steps = 0
+
+        while steps < max_steps:
+            # Check if all cells are dead
+            if not any(1 in row for row in self.grid):
+                print(f"All cells are dead after {steps} steps.")
+                break
+
+            # Make one step
+            self.make_step()
+
+            # Increment the step count
+            steps += 1
+        else:
+            print(f"Reached maximum of {max_steps} steps without all cells dying.")
+
+        return steps
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     GameOfLife(3, 5)
