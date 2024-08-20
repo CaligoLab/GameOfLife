@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 class GameOfLife(object):
 
     def __init__(self, x_dim, y_dim):
@@ -63,12 +63,34 @@ class GameOfLife(object):
         self.grid = interim_grid
 
     def make_n_steps(self, n):
-        # Implement a method that applies the make_step method n times.
-        pass
+        # Apply the make_step method n times
+        for _ in range(n):
+            self.make_step()
 
     def draw_grid(self):
-        # Draw the current state of the grid.
-        pass
+        ''' Create a scatter plot of the current grid state '''
+
+        live_cells_x = []
+        live_cells_y = []
+
+        # Iterate over the grid to create lists of coords for live cells
+        for row in range(self.x_dim):
+            for col in range(self.y_dim):
+                if self.grid[row][col] == 1:
+                    live_cells_x.append(col)  # x-coordinate (column index)
+                    live_cells_y.append(row)  # y-coordinate (row index)
+
+        # Create a scatter plot
+        plt.figure(figsize=(10, 10))
+        plt.scatter(live_cells_x, live_cells_y, color='orange', marker='s', s=100)
+        # Invert y-axis to match the printed grid orientation
+        plt.gca().invert_yaxis()
+        # for harmonious presentation
+        plt.xlim(-0.5, self.y_dim - 0.5)
+        plt.ylim(-0.5, self.x_dim - 0.5)
+        plt.gca().set_facecolor('black')
+        plt.grid(True, color="gray")
+        plt.show()
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
